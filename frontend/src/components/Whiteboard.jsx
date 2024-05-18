@@ -45,8 +45,12 @@ const Whiteboard = () => {
     });
 
     setSelectedElement(element);
-    console.log(element);
     dispatch(updateElement(element));
+  };
+
+  const handleMouseUp = () => {
+    setAction(null);
+    setSelectedElement(null);
   };
 
   return (
@@ -57,6 +61,7 @@ const Whiteboard = () => {
         width={window.innerWidth}
         height={window.innerHeight}
         onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
       />
     </>
   );
