@@ -2,14 +2,23 @@ import React, { useState, useRef, useLayoutEffect } from "react";
 import Menu from "./Menu";
 import rough from "roughjs";
 import { toolTypes, actionTypes } from "../redux/constants/constants";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { createElement } from "../utils/createElement";
 import { v4 as uuid } from "uuid";
+import { updateElement } from "../redux/slices/whiteboardSlice";
+
+let selectedElement;
+
+const setSelectedElement = (el) => {
+  selectedElement = el;
+};
 
 const Whiteboard = () => {
   const canvasRef = useRef();
-  const toolType = useSelector((state) => state.whiteboard.tool);
   const [action, setAction] = useState(null);
+
+  const toolType = useSelector((state) => state.whiteboard.tool);
+  const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
@@ -35,7 +44,9 @@ const Whiteboard = () => {
       id: uuid(),
     });
 
+    setSelectedElement(element);
     console.log(element);
+    dispatch(updateElement(element));
   };
 
   return (

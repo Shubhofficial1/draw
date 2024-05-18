@@ -8,7 +8,12 @@ const store = configureStore({
     whiteboard: whiteboardSliceReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware),
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoreActions: ["whiteboard/updateElement"],
+        ignorePaths: ["whiteboard.elements"],
+      },
+    }).concat(apiSlice.middleware),
   devTools: true,
 });
 
