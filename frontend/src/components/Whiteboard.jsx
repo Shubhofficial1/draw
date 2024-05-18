@@ -1,9 +1,13 @@
-import React, { useRef, useLayoutEffect } from "react";
+import React, { useState, useRef, useLayoutEffect } from "react";
 import Menu from "./Menu";
 import rough from "roughjs";
+import { toolTypes, actions } from "../redux/constants/constants";
+import { useSelector } from "react-redux";
 
 const Whiteboard = () => {
   const canvasRef = useRef();
+  const toolType = useSelector((state) => state.whiteboard.tool);
+  const [action, setAction] = useState(null);
 
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
@@ -13,6 +17,14 @@ const Whiteboard = () => {
     rc.line(80, 120, 300, 100);
   }, []);
 
+  const handleMouseDown = (event) => {
+    const { clientX, clientY } = event;
+
+    if (toolType === toolTypes.RECTANGLE) {
+      setAction(actions.DRAWING);
+    }
+  };
+
   return (
     <>
       <Menu />
@@ -20,6 +32,7 @@ const Whiteboard = () => {
         ref={canvasRef}
         width={window.innerWidth}
         height={window.innerHeight}
+        onMouseDown={handleMouseDown}
       />
     </>
   );
