@@ -4,6 +4,6 @@ export const toolTypes = {
   RECTANGLE: "RECTANGLE",
 };
 
-export const actions = {
+export const actionTypes = {
   DRAWING: "DRAWING",
 };

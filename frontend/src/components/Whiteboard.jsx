@@ -1,8 +1,10 @@
 import React, { useState, useRef, useLayoutEffect } from "react";
 import Menu from "./Menu";
 import rough from "roughjs";
-import { toolTypes, actions } from "../redux/constants/constants";
+import { toolTypes, actionTypes } from "../redux/constants/constants";
 import { useSelector } from "react-redux";
+import { createElement } from "../utils/createElement";
+import { v4 as uuid } from "uuid";
 
 const Whiteboard = () => {
   const canvasRef = useRef();
@@ -21,8 +23,19 @@ const Whiteboard = () => {
     const { clientX, clientY } = event;
 
     if (toolType === toolTypes.RECTANGLE) {
-      setAction(actions.DRAWING);
+      setAction(actionTypes.DRAWING);
     }
+
+    const element = createElement({
+      x1: clientX,
+      y1: clientY,
+      x2: clientX,
+      y2: clientY,
+      toolType,
+      id: uuid(),
+    });
+
+    console.log(element);
   };
 
   return (
