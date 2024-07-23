@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from "react";
+import React, { useState, useRef, useLayoutEffect, act } from "react";
 import Menu from "./Menu";
 import rough from "roughjs";
 import { toolTypes, actionTypes } from "../redux/constants/constants";
@@ -6,7 +6,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { createElement } from "../utils/createElement";
 import { updateElement } from "../utils/updateElement";
 import { drawElement } from "../utils/drawElement";
+import { adjustmentRequired } from "../utils/adjustmentRequired";
 import { updateElementInStore } from "../redux/slices/whiteboardSlice";
+import { adjustmentElementCoordinates } from "../utils/adjustElementCoordinates";
 import { v4 as uuid } from "uuid";
 
 let selectedElement;
@@ -53,6 +55,31 @@ const Whiteboard = () => {
   };
 
   const handleMouseUp = () => {
+    const selectedElementIndex = elements.findIndex(
+      (el) => el.id === selectedElement.id
+    );
+
+    if (selectedElementIndex !== -1) {
+      if (action === actionTypes.DRAWING) {
+        if (adjustmentRequired(elements[selectedElementIndex].type)) {
+          const { x1, y1, x2, y2 } = adjustmentElementCoordinates(
+            elements[selectedElementIndex]
+          );
+          updateElement(
+            {
+              id: selectedElement.id,
+              index: selectedElementIndex,
+              x1,
+              y1,
+              x2,
+              y2,
+              type: elements[selectedElementIndex].type,
+            },
+            elements
+          );
+        }
+      }
+    }
     setAction(null);
     setSelectedElement(null);
   };
