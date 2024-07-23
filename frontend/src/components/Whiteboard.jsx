@@ -5,6 +5,7 @@ import { toolTypes, actionTypes } from "../redux/constants/constants";
 import { useSelector, useDispatch } from "react-redux";
 import { createElement } from "../utils/createElement";
 import { updateElement } from "../utils/updateElement";
+import { drawElement } from "../utils/drawElement";
 import { updateElementInStore } from "../redux/slices/whiteboardSlice";
 import { v4 as uuid } from "uuid";
 
@@ -17,18 +18,19 @@ const setSelectedElement = (el) => {
 const Whiteboard = () => {
   const canvasRef = useRef();
   const [action, setAction] = useState(null);
-
   const toolType = useSelector((state) => state.whiteboard.tool);
   const elements = useSelector((state) => state.whiteboard.elements);
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
-    const rc = rough.canvas(canvas);
-    rc.rectangle(10, 10, 100, 100);
-    rc.rectangle(20, 20, 300, 300);
-    rc.line(80, 120, 300, 100);
-  }, []);
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const roughCanvas = rough.canvas(canvas);
+    elements.forEach((element) => {
+      drawElement({ roughCanvas, context: ctx, element });
+    });
+  }, [elements]);
 
   const handleMouseDown = (event) => {
     const { clientX, clientY } = event;
