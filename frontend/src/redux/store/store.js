@@ -10,7 +10,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoreActions: ["whiteboard/updateElement"],
+        ignoreActions: ["whiteboard/updateElementInStore"],
         ignorePaths: ["whiteboard.elements"],
       },
     }).concat(apiSlice.middleware),
@@ -18,3 +18,5 @@ const store = configureStore({
 });
 
 export default store;
+
+// serializableCheck: false, // use this for now , but not recommended

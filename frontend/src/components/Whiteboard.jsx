@@ -4,8 +4,9 @@ import rough from "roughjs";
 import { toolTypes, actionTypes } from "../redux/constants/constants";
 import { useSelector, useDispatch } from "react-redux";
 import { createElement } from "../utils/createElement";
+import { updateElement } from "../utils/updateElement";
+import { updateElementInStore } from "../redux/slices/whiteboardSlice";
 import { v4 as uuid } from "uuid";
-import { updateElement } from "../redux/slices/whiteboardSlice";
 
 let selectedElement;
 
@@ -18,6 +19,7 @@ const Whiteboard = () => {
   const [action, setAction] = useState(null);
 
   const toolType = useSelector((state) => state.whiteboard.tool);
+  const elements = useSelector((state) => state.whiteboard.elements);
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
@@ -45,12 +47,35 @@ const Whiteboard = () => {
     });
 
     setSelectedElement(element);
-    dispatch(updateElement(element));
+    dispatch(updateElementInStore(element));
   };
 
   const handleMouseUp = () => {
     setAction(null);
     setSelectedElement(null);
+  };
+
+  const handleMouseMove = (event) => {
+    const { clientX, clientY } = event;
+
+    if (action === actionTypes.DRAWING) {
+      // Find index of selected element in store's elements array
+      const index = elements.findIndex((el) => el.id === selectedElement.id);
+      if (index !== -1) {
+        updateElement(
+          {
+            id: elements[index].id,
+            x1: elements[index].x1,
+            y1: elements[index].y1,
+            x2: clientX,
+            y2: clientY,
+            type: elements[index].type,
+            index,
+          },
+          elements
+        );
+      }
+    }
   };
 
   return (
@@ -62,6 +87,7 @@ const Whiteboard = () => {
         height={window.innerHeight}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
       />
     </>
   );
