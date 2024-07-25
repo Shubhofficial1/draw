@@ -9,11 +9,18 @@ const app = express();
 const server = http.createServer(app);
 app.use(cors());
 
+const elements = [];
+
 const io = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
   },
+});
+
+io.on("connection", (socket) => {
+  console.log("A User Connected");
+  io.to(socket.id).emit("whiteboard-state", elements);
 });
 
 app.get("/", (req, res) => {
