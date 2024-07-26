@@ -9,7 +9,7 @@ const app = express();
 const server = http.createServer(app);
 app.use(cors());
 
-const elements = [];
+let elements = [];
 
 const io = new Server(server, {
   cors: {
@@ -24,6 +24,11 @@ io.on("connection", (socket) => {
   socket.on("element-update", (elementData) => {
     updateElementInElements(elementData);
     socket.broadcast.emit("element-update", elementData);
+  });
+
+  socket.on("whiteboard-clear", () => {
+    elements = [];
+    socket.broadcast.emit("whiteboard-clear");
   });
 });
 

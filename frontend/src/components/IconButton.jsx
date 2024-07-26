@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setElements, setToolType } from "../redux/slices/whiteboardSlice";
+import { emitClearWhiteboard } from "../socket/socketConnection";
 
 const IconButton = ({ src, type, isRubber }) => {
   const dispatch = useDispatch();
@@ -12,6 +13,7 @@ const IconButton = ({ src, type, isRubber }) => {
 
   const handleClearCanvas = () => {
     dispatch(setElements([]));
+    emitClearWhiteboard();
   };
 
   return (
