@@ -48,7 +48,6 @@ const Whiteboard = () => {
         toolType,
         id: uuid(),
       });
-      console.log(element);
       setSelectedElement(element);
       dispatch(updateElementInStore(element));
     }
