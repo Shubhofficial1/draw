@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect, act } from "react";
+import React, { useState, useRef, useLayoutEffect } from "react";
 import Menu from "./Menu";
 import rough from "roughjs";
 import { toolTypes, actionTypes } from "../redux/constants/constants";
