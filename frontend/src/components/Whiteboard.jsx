@@ -11,15 +11,10 @@ import { updateElementInStore } from "../redux/slices/whiteboardSlice";
 import { adjustmentElementCoordinates } from "../utils/adjustElementCoordinates";
 import { v4 as uuid } from "uuid";
 
-let selectedElement;
-
-const setSelectedElement = (el) => {
-  selectedElement = el;
-};
-
 const Whiteboard = () => {
   const canvasRef = useRef();
   const [action, setAction] = useState(null);
+  const [selectedElement, setSelectedElement] = useState(null);
   const toolType = useSelector((state) => state.whiteboard.tool);
   const elements = useSelector((state) => state.whiteboard.elements);
   const dispatch = useDispatch();
@@ -37,24 +32,32 @@ const Whiteboard = () => {
   const handleMouseDown = (event) => {
     const { clientX, clientY } = event;
 
-    if (
-      toolType === toolTypes.RECTANGLE ||
-      toolType === toolTypes.LINE ||
-      toolType === toolTypes.PENCIL
-    ) {
-      setAction(actionTypes.DRAWING);
+    const element = createElement({
+      x1: clientX,
+      y1: clientY,
+      x2: clientX,
+      y2: clientY,
+      toolType,
+      id: uuid(),
+    });
 
-      const element = createElement({
-        x1: clientX,
-        y1: clientY,
-        x2: clientX,
-        y2: clientY,
-        toolType,
-        id: uuid(),
-      });
-      setSelectedElement(element);
-      dispatch(updateElementInStore(element));
+    switch (toolType) {
+      case toolTypes.RECTANGLE:
+      case toolTypes.LINE:
+      case toolTypes.PENCIL: {
+        setAction(actionTypes.DRAWING);
+        break;
+      }
+      case toolTypes.TEXT: {
+        setAction(actionTypes.WRITING);
+        break;
+      }
+      default:
+        throw new Error("Something went wrong while setting actionType");
     }
+
+    setSelectedElement(element);
+    dispatch(updateElementInStore(element));
   };
 
   const handleMouseUp = () => {

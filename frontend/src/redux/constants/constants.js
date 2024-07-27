@@ -10,4 +10,5 @@ export const toolTypes = {
 
 export const actionTypes = {
   DRAWING: "DRAWING",
+  WRITING: "WRITING",
 };
