@@ -4,6 +4,7 @@ import rectangleSVG from "/assets/rectangle.svg";
 import lineSVG from "/assets/line.svg";
 import rubberSVG from "/assets/rubber.svg";
 import pencilSVG from "/assets/pencil.svg";
+import textSVG from "/assets/text.svg";
 
 import { toolTypes } from "../redux/constants/constants";
 
@@ -14,6 +15,7 @@ const Menu = () => {
       <IconButton src={lineSVG} type={toolTypes.LINE} />
       <IconButton src={rubberSVG} type={toolTypes.RUBBER} isRubber />
       <IconButton src={pencilSVG} type={toolTypes.PENCIL} />
+      <IconButton src={textSVG} type={toolTypes.TEXT} />
     </div>
   );
 };

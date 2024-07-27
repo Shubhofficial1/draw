@@ -5,6 +5,7 @@ export const toolTypes = {
   LINE: "LINE",
   RUBBER: "RUBBER",
   PENCIL: "PENCIL",
+  TEXT: "TEXT",
 };
 
 export const actionTypes = {
