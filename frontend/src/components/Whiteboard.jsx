@@ -114,7 +114,17 @@ const Whiteboard = () => {
     }
   };
 
-  const handleTextAreaBlur = (event) => {};
+  const handleTextAreaBlur = (event) => {
+    const { id, x1, y1, type } = selectedElement;
+    const index = elements.findIndex((el) => el.id === selectedElement.id);
+    if (index !== -1) {
+      updateElement(
+        { id, x1, y1, type, text: event.target.value, index },
+        elements
+      );
+      setAction(null);
+    }
+  };
 
   return (
     <>
@@ -140,6 +150,7 @@ const Whiteboard = () => {
         />
       ) : null}
       <canvas
+        id="canvas"
         ref={canvasRef}
         width={window.innerWidth}
         height={window.innerHeight}
