@@ -33,6 +33,10 @@ const Whiteboard = () => {
   const handleMouseDown = (event) => {
     const { clientX, clientY } = event;
 
+    if (selectedElement && action === actionTypes.WRITING) {
+      return;
+    }
+
     const element = createElement({
       x1: clientX,
       y1: clientY,
@@ -63,7 +67,7 @@ const Whiteboard = () => {
 
   const handleMouseUp = () => {
     const selectedElementIndex = elements.findIndex(
-      (el) => el.id === selectedElement.id
+      (el) => el.id === selectedElement?.id
     );
 
     if (selectedElementIndex !== -1) {
@@ -123,6 +127,7 @@ const Whiteboard = () => {
         elements
       );
       setAction(null);
+      setSelectedElement(null);
     }
   };
 
