@@ -13,6 +13,7 @@ import { v4 as uuid } from "uuid";
 
 const Whiteboard = () => {
   const canvasRef = useRef();
+  const textAreaRef = useRef();
   const [action, setAction] = useState(null);
   const [selectedElement, setSelectedElement] = useState(null);
   const toolType = useSelector((state) => state.whiteboard.tool);
@@ -113,9 +114,31 @@ const Whiteboard = () => {
     }
   };
 
+  const handleTextAreaBlur = (event) => {};
+
   return (
     <>
       <Menu />
+      {action === actionTypes.WRITING ? (
+        <textarea
+          ref={textAreaRef}
+          onBlur={handleTextAreaBlur}
+          style={{
+            position: "absolute",
+            top: selectedElement.y1 - 3,
+            left: selectedElement.x1,
+            font: "24px sans-serif",
+            margin: "0px",
+            padding: "0px",
+            border: "0px",
+            outline: "0px",
+            resize: "auto",
+            overflow: "hidden",
+            whiteSpace: "pre",
+            background: "transparent",
+          }}
+        />
+      ) : null}
       <canvas
         ref={canvasRef}
         width={window.innerWidth}
