@@ -154,6 +154,35 @@ const Whiteboard = () => {
         ? getCursorForPosition(element.position)
         : "default";
     }
+
+    if (
+      toolType === toolTypes.SELECTION &&
+      action === actionTypes.MOVING &&
+      selectedElement
+    ) {
+      const { id, x1, x2, y1, y2, type, offsetX, offsetY } = selectedElement;
+      const width = x2 - x1;
+      const height = y2 - y1;
+      const newX1 = clientX - offsetX;
+      const newY1 = clientY - offsetY;
+
+      const index = elements.findIndex((el) => el.id === selectedElement.id);
+
+      if (index !== -1) {
+        updateElement(
+          {
+            id,
+            x1: newX1,
+            y1: newY1,
+            x2: newX1 + width,
+            y2: newY1 + height,
+            type,
+            index,
+          },
+          elements
+        );
+      }
+    }
   };
 
   const handleTextAreaBlur = (event) => {
