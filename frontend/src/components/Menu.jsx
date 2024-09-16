@@ -1,4 +1,3 @@
-import React from "react";
 import IconButton from "./IconButton";
 import rectangleSVG from "/assets/rectangle.svg";
 import lineSVG from "/assets/line.svg";

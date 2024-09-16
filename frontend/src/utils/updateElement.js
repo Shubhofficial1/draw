@@ -12,7 +12,7 @@ export const updateElement = (
 
   switch (type) {
     case toolTypes.LINE:
-    case toolTypes.RECTANGLE:
+    case toolTypes.RECTANGLE: {
       const updatedElement = createElement({
         id,
         x1,
@@ -24,9 +24,9 @@ export const updateElement = (
       elementsCopy[index] = updatedElement;
       store.dispatch(setElements(elementsCopy));
       emitElementUpdate(updatedElement);
-
       break;
-    case toolTypes.PENCIL:
+    }
+    case toolTypes.PENCIL: {
       elementsCopy[index] = {
         ...elementsCopy[index],
         points: [
@@ -42,8 +42,8 @@ export const updateElement = (
       store.dispatch(setElements(elementsCopy));
       emitElementUpdate(updatedPencilElement);
       break;
-
-    case toolTypes.TEXT:
+    }
+    case toolTypes.TEXT: {
       const textWidth = document
         .getElementById("canvas")
         .getContext("2d")
@@ -55,7 +55,7 @@ export const updateElement = (
           x1,
           y1,
           x2: x1 + textWidth,
-          y2: textHeight,
+          y2: y1 + textHeight,
           toolType: type,
           text,
         }),
@@ -65,6 +65,8 @@ export const updateElement = (
       store.dispatch(setElements(elementsCopy));
       emitElementUpdate(updatedTextElement);
       break;
+    }
+
     default:
       throw new Error("Something went wrong while updating element");
   }
