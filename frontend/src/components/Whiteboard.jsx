@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import Menu from "./Menu";
 import rough from "roughjs";
 import { toolTypes, actionTypes } from "../redux/constants/constants";
@@ -9,6 +9,8 @@ import { drawElement } from "../utils/drawElement";
 import { adjustmentRequired } from "../utils/adjustmentRequired";
 import { updateElementInStore } from "../redux/slices/whiteboardSlice";
 import { adjustmentElementCoordinates } from "../utils/adjustElementCoordinates";
+import { getElementAtPosition } from "../utils/getElementAtPosition";
+
 import { v4 as uuid } from "uuid";
 
 const Whiteboard = () => {
@@ -114,6 +116,14 @@ const Whiteboard = () => {
           },
           elements
         );
+      }
+    }
+
+    if (toolType == toolTypes.SELECTION) {
+      const element = getElementAtPosition(clientX, clientY, elements);
+
+      if (element) {
+        console.log(element);
       }
     }
   };

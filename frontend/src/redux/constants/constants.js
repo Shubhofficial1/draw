@@ -13,3 +13,13 @@ export const actionTypes = {
   DRAWING: "DRAWING",
   WRITING: "WRITING",
 };
+
+export const cursorPositions = {
+  START: "START",
+  END: "END",
+  INSIDE: "INSIDE",
+  TOP_LEFT: "TOP_LEFT",
+  TOP_RIGHT: "TOP_RIGHT",
+  BOTTOM_LEFT: "BOTTOM_LEFT",
+  BOTTOM_RIGHT: "BOTTOM_RIGHT",
+};
