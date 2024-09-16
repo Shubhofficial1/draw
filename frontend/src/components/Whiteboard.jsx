@@ -84,6 +84,10 @@ const Whiteboard = () => {
               ? actionTypes.MOVING
               : actionTypes.RESIZING
           );
+
+          const offsetX = clientX - element.x1;
+          const offsetY = clientY - element.y1;
+          setSelectedElement({ ...element, offsetX, offsetY });
         }
         break;
       }
