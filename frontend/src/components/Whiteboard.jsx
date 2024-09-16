@@ -17,6 +17,7 @@ import { getElementAtPosition } from "../utils/getElementAtPosition";
 
 import { v4 as uuid } from "uuid";
 import { getCursorForPosition } from "../utils/getCursorForPosition";
+import { getResizedCoordinates } from "../utils/getResizedCoordinates";
 
 const Whiteboard = () => {
   const canvasRef = useRef();
@@ -102,7 +103,7 @@ const Whiteboard = () => {
     );
 
     if (selectedElementIndex !== -1) {
-      if (action === actionTypes.DRAWING) {
+      if (action === actionTypes.DRAWING || action === actionTypes.RESIZING) {
         if (adjustmentRequired(elements[selectedElementIndex].type)) {
           const { x1, y1, x2, y2 } = adjustmentElementCoordinates(
             elements[selectedElementIndex]
@@ -178,6 +179,38 @@ const Whiteboard = () => {
             y2: newY1 + height,
             type,
             index,
+          },
+          elements
+        );
+      }
+    }
+
+    if (
+      toolType === toolTypes.SELECTION &&
+      action === actionTypes.RESIZING &&
+      selectedElement
+    ) {
+      const { id, type, position, ...coordinates } = selectedElement;
+
+      const { x1, y1, x2, y2 } = getResizedCoordinates(
+        clientX,
+        clientY,
+        position,
+        coordinates
+      );
+
+      const selectedElementIndex = elements.findIndex((el) => el.id === id);
+
+      if (selectedElementIndex !== -1) {
+        updateElement(
+          {
+            x1,
+            x2,
+            y1,
+            y2,
+            type: type,
+            id: id,
+            index: selectedElementIndex,
           },
           elements
         );
