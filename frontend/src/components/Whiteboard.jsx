@@ -12,6 +12,7 @@ import { adjustmentElementCoordinates } from "../utils/adjustElementCoordinates"
 import { getElementAtPosition } from "../utils/getElementAtPosition";
 
 import { v4 as uuid } from "uuid";
+import { getCursorForPosition } from "../utils/getCursorForPosition";
 
 const Whiteboard = () => {
   const canvasRef = useRef();
@@ -121,10 +122,9 @@ const Whiteboard = () => {
 
     if (toolType == toolTypes.SELECTION) {
       const element = getElementAtPosition(clientX, clientY, elements);
-
-      if (element) {
-        console.log(element);
-      }
+      event.target.style.cursor = element
+        ? getCursorForPosition(element.position)
+        : "default";
     }
   };
 
