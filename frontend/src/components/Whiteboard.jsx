@@ -1,7 +1,11 @@
 import { useState, useRef, useLayoutEffect } from "react";
 import Menu from "./Menu";
 import rough from "roughjs";
-import { toolTypes, actionTypes } from "../redux/constants/constants";
+import {
+  toolTypes,
+  actionTypes,
+  cursorPositions,
+} from "../redux/constants/constants";
 import { useSelector, useDispatch } from "react-redux";
 import { createElement } from "../utils/createElement";
 import { updateElement } from "../utils/updateElement";
@@ -40,32 +44,52 @@ const Whiteboard = () => {
       return;
     }
 
-    const element = createElement({
-      x1: clientX,
-      y1: clientY,
-      x2: clientX,
-      y2: clientY,
-      toolType,
-      id: uuid(),
-    });
-
     switch (toolType) {
       case toolTypes.RECTANGLE:
       case toolTypes.LINE:
       case toolTypes.PENCIL: {
+        const element = createElement({
+          x1: clientX,
+          y1: clientY,
+          x2: clientX,
+          y2: clientY,
+          toolType,
+          id: uuid(),
+        });
         setAction(actionTypes.DRAWING);
+        setSelectedElement(element);
+        dispatch(updateElementInStore(element));
         break;
       }
       case toolTypes.TEXT: {
+        const element = createElement({
+          x1: clientX,
+          y1: clientY,
+          x2: clientX,
+          y2: clientY,
+          toolType,
+          id: uuid(),
+        });
         setAction(actionTypes.WRITING);
+        setSelectedElement(element);
+        dispatch(updateElementInStore(element));
+        break;
+      }
+      case toolTypes.SELECTION: {
+        const element = getElementAtPosition(clientX, clientY, elements);
+
+        if (element && element.type === toolTypes.RECTANGLE) {
+          setAction(
+            element.position === cursorPositions.INSIDE
+              ? actionTypes.MOVING
+              : actionTypes.RESIZING
+          );
+        }
         break;
       }
       default:
         throw new Error("Something went wrong while setting actionType");
     }
-
-    setSelectedElement(element);
-    dispatch(updateElementInStore(element));
   };
 
   const handleMouseUp = () => {

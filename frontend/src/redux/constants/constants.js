@@ -12,6 +12,8 @@ export const toolTypes = {
 export const actionTypes = {
   DRAWING: "DRAWING",
   WRITING: "WRITING",
+  MOVING: "MOVING",
+  RESIZING: "RESIZING",
 };
 
 export const cursorPositions = {
