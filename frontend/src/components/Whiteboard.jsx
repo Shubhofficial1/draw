@@ -95,6 +95,13 @@ const Whiteboard = () => {
           const offsetY = clientY - element.y1;
           setSelectedElement({ ...element, offsetX, offsetY });
         }
+
+        if (element && element.type === toolTypes.PENCIL) {
+          setAction(actionTypes.MOVING);
+          const xOffsets = element.points.map((point) => clientX - point.x);
+          const yOffsets = element.points.map((point) => clientY - point.y);
+          setSelectedElement({ ...element, xOffsets, yOffsets });
+        }
         break;
       }
       default:
