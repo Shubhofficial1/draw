@@ -8,7 +8,10 @@ import {
 } from "../redux/constants/constants";
 import { useSelector, useDispatch } from "react-redux";
 import { createElement } from "../utils/createElement";
-import { updateElement } from "../utils/updateElement";
+import {
+  updateElement,
+  updatePencilElementWhenMoving,
+} from "../utils/updateElement";
 import { drawElement } from "../utils/drawElement";
 import { adjustmentRequired } from "../utils/adjustmentRequired";
 import { updateElementInStore } from "../redux/slices/whiteboardSlice";
@@ -168,6 +171,22 @@ const Whiteboard = () => {
         : "default";
     }
 
+    if (
+      toolType === toolTypes.SELECTION &&
+      action === actionTypes.MOVING &&
+      selectedElement.type === toolTypes.PENCIL
+    ) {
+      const newPoints = selectedElement.points.map((_, index) => ({
+        x: clientX - selectedElement.xOffsets[index],
+        y: clientY - selectedElement.yOffsets[index],
+      }));
+
+      const index = elements.findIndex((el) => el.id === selectedElement.id);
+      if (index !== -1) {
+        updatePencilElementWhenMoving({ index, newPoints }, elements);
+      }
+      return;
+    }
     if (
       toolType === toolTypes.SELECTION &&
       action === actionTypes.MOVING &&
