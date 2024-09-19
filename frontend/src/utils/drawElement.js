@@ -8,12 +8,14 @@ const drawPencilElement = (context, element) => {
   });
   const pathData = getSvgPathFromStroke(myStroke);
   const myPath = new Path2D(pathData);
+  context.fillStyle = "white";
   context.fill(myPath);
 };
 
 const drawTextElement = (context, element) => {
   context.textBaseline = "top";
-  context.font = "24px sans-serif";
+  context.font = "24px Quicksand";
+  context.fillStyle = "white";
   context.fillText(element.text, element.x1, element.y1);
 };
 

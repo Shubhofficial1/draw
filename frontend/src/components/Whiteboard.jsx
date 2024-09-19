@@ -1,26 +1,26 @@
 import { useState, useRef, useLayoutEffect } from "react";
 import Menu from "./Menu";
-import rough from "roughjs";
+import { drawElement } from "../utils/drawElement";
+import { createElement } from "../utils/createElement";
+import { adjustmentRequired } from "../utils/adjustmentRequired";
+import { updateElementInStore } from "../redux/slices/whiteboardSlice";
+import { adjustmentElementCoordinates } from "../utils/adjustElementCoordinates";
+import { getElementAtPosition } from "../utils/getElementAtPosition";
+import { getCursorForPosition } from "../utils/getCursorForPosition";
+import { getResizedCoordinates } from "../utils/getResizedCoordinates";
+import {
+  updateElement,
+  updatePencilElementWhenMoving,
+} from "../utils/updateElement";
 import {
   toolTypes,
   actionTypes,
   cursorPositions,
 } from "../redux/constants/constants";
-import { useSelector, useDispatch } from "react-redux";
-import { createElement } from "../utils/createElement";
-import {
-  updateElement,
-  updatePencilElementWhenMoving,
-} from "../utils/updateElement";
-import { drawElement } from "../utils/drawElement";
-import { adjustmentRequired } from "../utils/adjustmentRequired";
-import { updateElementInStore } from "../redux/slices/whiteboardSlice";
-import { adjustmentElementCoordinates } from "../utils/adjustElementCoordinates";
-import { getElementAtPosition } from "../utils/getElementAtPosition";
 
+import rough from "roughjs";
 import { v4 as uuid } from "uuid";
-import { getCursorForPosition } from "../utils/getCursorForPosition";
-import { getResizedCoordinates } from "../utils/getResizedCoordinates";
+import { useSelector, useDispatch } from "react-redux";
 
 const Whiteboard = () => {
   const canvasRef = useRef();
@@ -271,11 +271,12 @@ const Whiteboard = () => {
         <textarea
           ref={textAreaRef}
           onBlur={handleTextAreaBlur}
+          spellCheck="false"
           style={{
             position: "absolute",
             top: selectedElement.y1 - 3,
             left: selectedElement.x1,
-            font: "24px sans-serif",
+            font: "24px Quicksand",
             margin: "0px",
             padding: "0px",
             border: "0px",
@@ -295,6 +296,7 @@ const Whiteboard = () => {
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
+        style={{ background: "#0D1016" }}
       />
     </>
   );

@@ -4,11 +4,13 @@ import { toolTypes } from "../redux/constants/constants";
 const generator = rough.generator();
 
 const generateRectangle = ({ x1, y1, x2, y2 }) => {
-  return generator.rectangle(x1, y1, x2 - x1, y2 - y1);
+  return generator.rectangle(x1, y1, x2 - x1, y2 - y1, {
+    stroke: "white",
+  });
 };
 
 const generateLine = ({ x1, y1, x2, y2 }) => {
-  return generator.line(x1, y1, x2, y2);
+  return generator.line(x1, y1, x2, y2, { stroke: "white" });
 };
 
 export const createElement = ({ x1, y1, x2, y2, toolType, id, text }) => {
