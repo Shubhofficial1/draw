@@ -20,7 +20,9 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   console.log("A User Connected");
+
   io.to(socket.id).emit("whiteboard-state", elements);
+
   socket.on("element-update", (elementData) => {
     updateElementInElements(elementData);
     socket.broadcast.emit("element-update", elementData);
@@ -30,6 +32,13 @@ io.on("connection", (socket) => {
     elements = [];
     socket.broadcast.emit("whiteboard-clear");
   });
+
+  socket.on("cursor-position", (cursorData) =>
+    socket.broadcast.emit("cursor-position", {
+      ...cursorData,
+      userId: socket.id,
+    })
+  );
 });
 
 app.get("/", (req, res) => {
