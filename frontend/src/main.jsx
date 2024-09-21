@@ -10,11 +10,13 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen.jsx";
+import NotFound from "./screens/NotFound.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="/" index={true} element={<HomeScreen />}></Route>
+      <Route path="*" element={<NotFound />}></Route>
     </Route>
   )
 );

@@ -23,7 +23,7 @@ const IconButton = ({ src, type, isRubber }) => {
       }`}
       onClick={isRubber ? handleClearCanvas : setToolTypeHandler}
     >
-      <img src={src} type={type} className="w-[100%] h-[100%] p-2" />
+      <img src={src} type={type} alt={src} className="w-[100%] h-[100%] p-2" />
     </button>
   );
 };

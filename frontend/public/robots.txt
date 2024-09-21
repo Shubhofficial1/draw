@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /login/
+Allow: /public/
+Allow: /
+Sitemap: https://www.draw.shubham-gupta.in/sitemap.xml
